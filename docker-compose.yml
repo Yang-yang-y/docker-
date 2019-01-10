@@ -128,6 +128,12 @@ services:
         - mysql:mysql
       volumes:
         - "./phpmyadmin/sessions:/sessions"
+  cron:
+    image: registry.cn-hangzhou.aliyuncs.com/image_home/cron:1.0
+    volumes:
+      - "../xingstation-api/:/var/www/html"
+    networks: 
+      - backend
   laravel-echo-server:
         image: registry.cn-hangzhou.aliyuncs.com/image_home/laravel-echo-server:1.1
         volumes:
