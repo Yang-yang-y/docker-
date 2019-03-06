@@ -2,7 +2,7 @@ FROM php:7.1-fpm-alpine
 MAINTAINER Larryzhang <zhangyang@jingfree.com>
 # modify the repo to aliyun
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories
-RUN apk --no-cache add  su-exec busybox-suid curl git  openssh openssl pcre-dev tini bash vim  freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev  libmcrypt-dev supervisor libxml2-dev autoconf g++ make  openssl-dev automake  libtool
+RUN apk --no-cache add imap-dev su-exec busybox-suid curl git  openssh openssl pcre-dev tini bash vim  freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev  libmcrypt-dev supervisor libxml2-dev autoconf g++ make  openssl-dev automake  libtool
 COPY composer /usr/local/bin/composer
 RUN composer config -g repo.packagist composer https://packagist.phpcomposer.com
 
@@ -27,10 +27,12 @@ RUN pecl install redis && \
     --with-libxml-dir=/usr/include/ && \
   docker-php-ext-install xmlrpc && \
   docker-php-ext-install mcrypt && \
+  pecl install mongodb && \
+  docker-php-ext-enable mongodb && \
+  docker-php-ext-install zip && \
+  docker-php-ext-configure imap --with-imap --with-imap-ssl && \
+  docker-php-ext-install imap && \
   docker-php-source delete
-RUN pecl install mongodb
-RUN docker-php-ext-enable mongodb
-RUN docker-php-ext-install zip
 
 
 ADD ./laravel.ini /usr/local/etc/php/conf.d
