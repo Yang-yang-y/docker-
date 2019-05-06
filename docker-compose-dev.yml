@@ -6,6 +6,12 @@ networks:
   backend:
     driver: bridge
 
+volumes:
+  app-publication-sync:
+    external: true
+  app-shop-sync:
+    external: true
+
 services:
   mysql:
     image: mysql:5.7
@@ -66,7 +72,7 @@ services:
       - "SYS_PTRACE"
     volumes:
       - "../xingstation-publication/supervisor:/etc/supervisor.d"
-      - "../xingstation-publication/:/var/www/html"
+      - "app-publication-sync:/var/www/html:nocopy"
     networks:
       - backend
   php-ebank:
@@ -102,7 +108,7 @@ services:
       - "SYS_PTRACE"
     volumes:
       - "../xingstation-shop/supervisor:/etc/supervisor.d"
-      - "../xingstation-shop/:/var/www/html"
+      - "app-shop-sync:/var/www/html:nocopy"
     networks:
       - backend
   php-cms:
@@ -129,26 +135,6 @@ services:
       - "../october/:/var/www/html"
     networks:
       - backend
-<<<<<<< HEAD
-  phpmyadmin:
-      image: phpmyadmin/phpmyadmin
-      links:
-        - mysql:db
-      networks:
-        - backend
-      external_links:
-        - mysql:mysql
-      volumes:
-        - "./phpmyadmin/sessions:/sessions"
-  cron:
-    image: cron:1.1
-    volumes:
-      - "../xingstation-publication/:/var/www/html"
-      - "../xingstation-shop/:/var/www/xingstation-shop"
-    networks: 
-      - backend
-=======
->>>>>>> 076f006008988c5c694241d8218be15fa99ee2fe
   laravel-echo-server:
     image: registry.cn-hangzhou.aliyuncs.com/image_home/laravel-echo-server:1.1
     volumes:
@@ -183,8 +169,8 @@ services:
       - "../xingstation-shop-m/:/var/www/xingstation-shop-m"
       - "../xingstation-process-mana/:/var/www/xingstation-process-mana"
       - "../xingstation-api/:/var/www/open"
-      - "../xingstation-publication/:/var/www/ad"
-      - "../xingstation-shop/:/var/www/shop"
+      - "app-publication-sync:/var/www/ad:nocopy"
+      - "app-shop-sync:/var/www/shop:nocopy"
       - "../xingstation-cms/:/var/www/cms"
       - "../jing-saas/:/var/www/saas"
       - "../ebank/:/var/www/ebank"
@@ -198,6 +184,8 @@ services:
       backend:
         aliases:
           - ebank.jingfree.top
+
+
 
 
 
