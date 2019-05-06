@@ -129,9 +129,10 @@ services:
       volumes:
         - "./phpmyadmin/sessions:/sessions"
   cron:
-    image: registry.cn-hangzhou.aliyuncs.com/image_home/cron:1.0
+    image: cron:1.1
     volumes:
-      - "../xingstation-api/:/var/www/html"
+      - "../xingstation-publication/:/var/www/html"
+      - "../xingstation-shop/:/var/www/xingstation-shop"
     networks: 
       - backend
   laravel-echo-server:

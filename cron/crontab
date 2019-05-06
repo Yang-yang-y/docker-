@@ -1,1 +1,2 @@
 * * * * * /usr/local/bin/php /var/www/html/artisan schedule:run  >> /var/log/cron/cron.log 2>&1
+* * * * * /usr/local/bin/php /var/www/xingstation-shop/artisan schedule:run  >> /var/log/cron/cron.log 2>&1
